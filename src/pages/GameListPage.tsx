@@ -1,6 +1,7 @@
 import { useState, useMemo } from 'react';
 import { mockGames } from '../_mock/games';
 import GameCard from '../components/GameCard';
+import FilterBar from '../components/FilterBar';  // ← ADAUGĂ IMPORT
 
 function GameListPage() {
   const [searchQuery, setSearchQuery] = useState('');
@@ -58,7 +59,15 @@ function GameListPage() {
           </p>
         </div>
 
-        {/* TODO: FilterBar va fi aici mai târziu */}
+        {/* FilterBar - ÎNLOCUIEȘTE TODO cu asta */}
+        <FilterBar
+          onSearch={setSearchQuery}
+          onGenreFilter={setGenreFilter}
+          onPlatformFilter={setPlatformFilter}
+          onSort={setSortBy}
+        />
+
+        {/* Results count */}
         <div className="mb-6">
           <p className="text-gray-400">
             Showing {filteredGames.length} {filteredGames.length === 1 ? 'game' : 'games'}
