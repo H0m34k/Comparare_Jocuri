@@ -1,11 +1,22 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import type { Game } from '../_mock/games';
 
 export function useGameFilters(games: Game[]) {
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchParams] = useSearchParams();
+  const urlSearchQuery = searchParams.get('search') || '';
+
+  const [searchQuery, setSearchQuery] = useState(urlSearchQuery);
   const [genreFilter, setGenreFilter] = useState('All');
   const [platformFilter, setPlatformFilter] = useState('All');
   const [sortBy, setSortBy] = useState('title');
+
+  // Update search when URL changes
+  useEffect(() => {
+    if (urlSearchQuery) {
+      setSearchQuery(urlSearchQuery);
+    }
+  }, [urlSearchQuery]);
 
   const filteredGames = useMemo(() => {
     let filtered = [...games];
@@ -49,9 +60,13 @@ export function useGameFilters(games: Game[]) {
   };
 
   return {
+    searchQuery,
     setSearchQuery,
+    genreFilter,
     setGenreFilter,
+    platformFilter,
     setPlatformFilter,
+    sortBy,
     setSortBy,
     filteredGames,
     clearFilters,
